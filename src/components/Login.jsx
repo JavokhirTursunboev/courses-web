@@ -9,7 +9,7 @@ const Login = () => {
   const { isLoading } = useSelector((state) => state.auth);
   // end
 
-  const [mail, setMail] = useState("");
+  const [email, setMail] = useState("");
   const [password, setPassword] = useState("");
 
   const loginHandler = (e) => {
@@ -20,7 +20,7 @@ const Login = () => {
     <div className="text-center pt-5 ">
       <form className=" w-25 m-auto">
         <h1 className="h3 mb-3 fw-normal">Login</h1>
-        <Input label={"Email"} state={mail} setState={setMail} />
+        <Input label={"Email"} state={email} setState={setMail} />
         <Input
           label={"Password"}
           type={"password"}
