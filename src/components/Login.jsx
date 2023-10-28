@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import AuthServer from "../server/auth";
 import { signUserFailure, signUserStart, signUserSuccess } from "../slice/auth";
+import ValidationError from "../ValidationError";
 import Input from "./input";
 
 const Login = () => {
@@ -21,14 +22,15 @@ const Login = () => {
       const response = await AuthServer.userLogin(user);
       dispatch(signUserSuccess(response.user));
     } catch (error) {
-      console.log(error.response.data);
-      dispatch(signUserFailure(error.response.data));
+     
+      dispatch(signUserFailure(error.response.data.errors));
     }
   };
   return (
     <div className="text-center pt-5 ">
       <form className=" w-25 m-auto">
         <h1 className="h3 mb-3 fw-normal">Login</h1>
+        <ValidationError />
         <Input label={"Email"} state={email} setState={setMail} />
         <Input
           label={"Password"}
