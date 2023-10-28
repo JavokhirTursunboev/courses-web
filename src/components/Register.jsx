@@ -2,9 +2,9 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import AuthServer from "../server/auth";
 import {
-  registerUserFailure,
-  registerUserStart,
-  registerUserSuccess,
+  signUserFailure,
+  signUserStart,
+  signUserSuccess,
 } from "../slice/auth";
 import Input from "./input";
 
@@ -20,15 +20,15 @@ const Register = () => {
 
   const registerHandler = async (e) => {
     e.preventDefault();
-    dispatch(registerUserStart());
+    dispatch(signUserStart());
     const user = { username: name, email, password };
     try {
       const response = await AuthServer.userRegister(user);
       console.log(response);
       console.log(user);
-      dispatch(registerUserSuccess());
+      dispatch(signUserSuccess());
     } catch (error) {
-      dispatch(registerUserFailure());
+      dispatch(signUserFailure());
     }
   };
   return (
