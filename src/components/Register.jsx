@@ -32,7 +32,7 @@ const Register = () => {
     if (loggedIn) {
       navigate("/");
     }
-  }, []);
+  }, [loggedIn]);
   return (
     <div className="text-center pt-5">
       <form className=" w-25 m-auto">

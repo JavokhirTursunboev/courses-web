@@ -10,5 +10,10 @@ const AuthServer = {
     const { data } = await axios.post("/users/login", { user });
     return data;
   },
+
+  async getUser(user) {
+    const { data } = await axios.get("/user", { user });
+    return data;
+  },
 };
 export default AuthServer;
