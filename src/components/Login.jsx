@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router";
 import AuthServer from "../server/auth";
 import { signUserFailure, signUserStart, signUserSuccess } from "../slice/auth";
 import ValidationError from "../ValidationError";
@@ -8,11 +9,11 @@ import Input from "./input";
 const Login = () => {
   const [email, setMail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
   // redux
   const dispatch = useDispatch();
-  const { isLoading } = useSelector((state) => state.auth);
+  const { isLoading, loggedIn } = useSelector((state) => state.auth);
   // end
-
   const loginHandler = async (e) => {
     e.preventDefault();
     dispatch(signUserStart());
@@ -21,11 +22,17 @@ const Login = () => {
     try {
       const response = await AuthServer.userLogin(user);
       dispatch(signUserSuccess(response.user));
+      navigate("/");
     } catch (error) {
-     
       dispatch(signUserFailure(error.response.data.errors));
     }
   };
+
+  useEffect(() => {
+    if (loggedIn) {
+      navigate("/");
+    }
+  }, []);
   return (
     <div className="text-center pt-5 ">
       <form className=" w-25 m-auto">
