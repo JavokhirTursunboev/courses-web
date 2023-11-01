@@ -1,11 +1,21 @@
 import React from "react";
-import { Outlet } from "react-router";
+import { Outlet, useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 import { FaSkyatlas } from "react-icons/fa6";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { removerItem } from "../helper/persist-helper";
+import { logoutUser } from "../slice/auth";
 const Navbar = () => {
   const { loggedIn, user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handlerLogout = () => {
+    dispatch(logoutUser());
+    navigate("/login");
+    removerItem("token");
+  };
   return (
     <div>
       <div className="container pt-2 d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom">
@@ -21,6 +31,7 @@ const Navbar = () => {
               <button
                 type="button"
                 className="border-0 btn  btn-outline-warning"
+                onClick={handlerLogout}
               >
                 logout
               </button>

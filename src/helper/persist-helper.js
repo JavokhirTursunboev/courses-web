@@ -13,3 +13,11 @@ export const getItem = (key) => {
     console.log("error in get item");
   }
 };
+
+export const removerItem = (key) => {
+  try {
+    return localStorage.removeItem(key);
+  } catch (error) {
+    console.log(error);
+  }
+};
