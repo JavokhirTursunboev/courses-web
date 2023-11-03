@@ -13,6 +13,8 @@ import { useDispatch } from "react-redux";
 import AuthServer from "./server/auth";
 import { signUserSuccess } from "./slice/auth";
 import { getItem } from "./helper/persist-helper";
+import ArticleService from "./server/article";
+import { getArticleStart, getArticleSuccess } from "./slice/articleSlice";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -27,6 +29,16 @@ const router = createBrowserRouter(
 const App = () => {
   const dispatch = useDispatch();
 
+  const getArticle = async () => {
+    dispatch(getArticleStart());
+    try {
+      const response = await ArticleService.getArticle();
+      console.log(response);
+      dispatch(getArticleSuccess(response.articles));
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const getUser = async () => {
     try {
       const response = await AuthServer.getUser();
@@ -40,6 +52,7 @@ const App = () => {
     if (tokken) {
       getUser();
     }
+    getArticle();
   }, []);
   return <RouterProvider router={router} />;
 };
