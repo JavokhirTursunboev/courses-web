@@ -11,7 +11,7 @@ const Main = () => {
           <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
             {articles.map((item) => (
               <div className="col" key={item.id}>
-                <div className="card shadow-sm">
+                <div className="card shadow-sm h-100">
                   <svg
                     className="bd-placeholder-img card-img-top"
                     width="100%"
@@ -26,17 +26,15 @@ const Main = () => {
                     <rect width="100%" height="100%" fill="#55595c"></rect>
                   </svg>
 
-                  <div className="card-body">
-                    <p className="card-text">
-                      This is a wider card with supporting text below as a
-                      natural lead-in to additional content. This content is a
-                      little bit longer.
-                    </p>
-                    <div className="d-flex justify-content-between align-items-center">
+                  <div className="card-body d-flex flex-d flex-column justify-content-between ">
+                    <p className="card-text fw-bold">{item.title}</p>
+                    <p className="card-text ">{item.description}</p>
+
+                    <div className="d-flex justify-content-between align-items-center mt-2">
                       <div className="btn-group">
                         <button
                           type="button"
-                          className="btn btn-sm btn-outline-secondary"
+                          className="btn btn-sm btn-outline-success"
                         >
                           View
                         </button>
@@ -46,8 +44,16 @@ const Main = () => {
                         >
                           Edit
                         </button>
+                        <button
+                          type="button"
+                          className="btn btn-sm btn-outline-danger"
+                        >
+                          Delete
+                        </button>
                       </div>
-                      <small className="text-muted">9 mins</small>
+                      <small className="text-muted text-capitalize">
+                        {item.author.username}
+                      </small>
                     </div>
                   </div>
                 </div>
