@@ -1,11 +1,13 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import Loader from "../store/Loader";
 
 const Main = () => {
-  const { articles } = useSelector((state) => state.article);
+  const { articles, isLoading } = useSelector((state) => state.article);
 
   return (
     <div className="container">
+      {isLoading && <Loader />}
       <div className="album py-5 ">
         <div className="container">
           <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
@@ -26,35 +28,34 @@ const Main = () => {
                     <rect width="100%" height="100%" fill="#55595c"></rect>
                   </svg>
 
-                  <div className="card-body d-flex flex-d flex-column justify-content-between ">
-                    <p className="card-text fw-bold">{item.title}</p>
+                  <div className="card-body ">
+                    <p className="card-text fw-bold m-0">{item.title}</p>
                     <p className="card-text ">{item.description}</p>
-
-                    <div className="d-flex justify-content-between align-items-center mt-2">
-                      <div className="btn-group">
-                        <button
-                          type="button"
-                          className="btn btn-sm btn-outline-success"
-                        >
-                          View
-                        </button>
-                        <button
-                          type="button"
-                          className="btn btn-sm btn-outline-secondary"
-                        >
-                          Edit
-                        </button>
-                        <button
-                          type="button"
-                          className="btn btn-sm btn-outline-danger"
-                        >
-                          Delete
-                        </button>
-                      </div>
-                      <small className="text-muted text-capitalize">
-                        {item.author.username}
-                      </small>
+                  </div>
+                  <div className="d-flex justify-content-between align-items-center card-footer">
+                    <div className="btn-group">
+                      <button
+                        type="button"
+                        className="btn btn-sm btn-outline-success"
+                      >
+                        View
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-sm btn-outline-secondary"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-sm btn-outline-danger"
+                      >
+                        Delete
+                      </button>
                     </div>
+                    <small className="text-muted text-capitalize">
+                      {item.author.username}
+                    </small>
                   </div>
                 </div>
               </div>
