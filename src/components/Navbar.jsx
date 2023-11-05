@@ -2,7 +2,7 @@ import React from "react";
 import { Outlet, useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 import { FaSkyatlas } from "react-icons/fa6";
-
+import { GrAddCircle } from "react-icons/gr";
 import { useDispatch, useSelector } from "react-redux";
 import { removerItem } from "../helper/persist-helper";
 import { logoutUser } from "../slice/auth";
@@ -28,6 +28,12 @@ const Navbar = () => {
               <p className="me-3 py-2 text-dark text-decoration-none">
                 {user.username}
               </p>
+              <Link
+                className="d-flex justify-content-center fs-3   align-items-center text-dark text-decoration-none"
+                to={"/create-article"}
+              >
+                <GrAddCircle />
+              </Link>
               <button
                 type="button"
                 className="border-0 btn  btn-outline-warning"

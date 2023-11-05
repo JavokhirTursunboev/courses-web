@@ -15,6 +15,8 @@ import { signUserSuccess } from "./slice/auth";
 import { getItem } from "./helper/persist-helper";
 import ArticleService from "./server/article";
 import { getArticleStart, getArticleSuccess } from "./slice/articleSlice";
+import ArticleDes from "./components/ArticleDes";
+import CreateArticle from "./components/CreateArticle";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -22,6 +24,8 @@ const router = createBrowserRouter(
       <Route index element={<Main />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/articles/:slug" element={<ArticleDes />} />
+      <Route path="/create-article" element={<CreateArticle />} />
     </Route>
   )
 );
@@ -33,7 +37,7 @@ const App = () => {
     dispatch(getArticleStart());
     try {
       const response = await ArticleService.getArticle();
-      console.log(response);
+
       dispatch(getArticleSuccess(response.articles));
     } catch (error) {
       console.log(error);
@@ -54,7 +58,11 @@ const App = () => {
     }
     getArticle();
   }, []);
-  return <RouterProvider router={router} />;
+  return (
+    <div className="container">
+      <RouterProvider router={router} />
+    </div>
+  );
 };
 
 export default App;
