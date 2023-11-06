@@ -1,35 +1,52 @@
-import React, { useState } from "react";
-import Input from "./input";
-import TextArea from "./textArea";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router";
+import ArticleService from "../server/article";
+import {
+  postArticleFailure,
+  postArticleStart,
+  postArticleSuccess,
+} from "../slice/articleSlice";
+import ArticleForm from "./ArticleForm";
 
 const CreateArticle = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [body, setBody] = useState("");
+
+  const navigate = useNavigate();
+
+  // ========== redux =====
+  const dispatch = useDispatch();
+
+
+  // form submit func
+  const formSubmit = async (e) => {
+    e.preventDefault();
+    const article = { body, title, description };
+    dispatch(postArticleStart());
+    try {
+      await ArticleService.postArticle(article);
+      dispatch(postArticleSuccess());
+      navigate("/");
+    } catch (error) {
+      dispatch(postArticleFailure());
+    }
+  };
+  const formProps = {
+    title,
+    setTitle,
+    description,
+    setDescription,
+    body,
+    setBody,
+    formSubmit,
+  };
   return (
     <div className="text-center">
       <h1 className="fs-2">Create Article</h1>
       <div className="w-75 mx-auto">
-        <form>
-          <Input label={"Title"} state={title} setState={setTitle} />
-          <TextArea
-            label={"Description"}
-            state={description}
-            setState={setDescription}
-          />
-          <TextArea
-            label={"Body"}
-            state={body}
-            setState={setBody}
-            height="12rem"
-          />
-          <button
-            className="btn btn-lg btn-secondary w-100 mt-2  bg-secondary"
-            type="submit"
-          >
-            Primary
-          </button>
-        </form>
+        <ArticleForm {...formProps} />
       </div>
     </div>
   );
