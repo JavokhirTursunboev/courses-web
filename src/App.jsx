@@ -16,6 +16,7 @@ import { getItem } from "./helper/persist-helper";
 
 import ArticleDes from "./components/ArticleDes";
 import CreateArticle from "./components/CreateArticle";
+import EditArticle from "./components/EditArticle";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -25,6 +26,7 @@ const router = createBrowserRouter(
       <Route path="/register" element={<Register />} />
       <Route path="/articles/:slug" element={<ArticleDes />} />
       <Route path="/create-article" element={<CreateArticle />} />
+      <Route path="/edit/:slug" element={<EditArticle />} />
     </Route>
   )
 );
@@ -32,7 +34,6 @@ const router = createBrowserRouter(
 const App = () => {
   const dispatch = useDispatch();
 
- 
   const getUser = async () => {
     try {
       const response = await AuthServer.getUser();
@@ -46,7 +47,6 @@ const App = () => {
     if (tokken) {
       getUser();
     }
-   
   }, []);
   return (
     <div className="container">
