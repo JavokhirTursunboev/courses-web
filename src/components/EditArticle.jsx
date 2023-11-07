@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import ArticleService from "../server/article";
 import {
   getArticleDetailFailure,
   getArticleDetailStart,
   getArticleDetailSuccess,
+  postArticleFailure,
+  postArticleStart,
+  postArticleSuccess,
 } from "../slice/articleSlice";
 import ArticleForm from "./ArticleForm";
 
@@ -16,16 +19,16 @@ const EditArticle = () => {
   const [body, setBody] = useState("");
 
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const { slug } = useParams();
   useEffect(() => {
     const getArticleDetail = async () => {
       dispatch(getArticleDetailStart());
       try {
         const response = await ArticleService.getArticleDetail(slug);
-        setTitle(response.article.title)
-        setBody(response.article.body)
-        setDescription(response.article.description)
+        setTitle(response.article.title);
+        setBody(response.article.body);
+        setDescription(response.article.description);
         dispatch(getArticleDetailSuccess(response.article));
       } catch (error) {
         dispatch(getArticleDetailFailure());
@@ -34,8 +37,21 @@ const EditArticle = () => {
     getArticleDetail();
   }, []);
 
+  const formSubmit = async (e) => {
+    e.preventDefault();
+    const article = { title, description, body };
 
-const formSubmit = () => {};
+    dispatch(postArticleStart());
+
+    try {
+      await ArticleService.editArticle(slug, article);
+
+      dispatch(postArticleSuccess());
+      navigate("/");
+    } catch (error) {
+      dispatch(postArticleFailure());
+    }
+  };
   const formProps = {
     title,
     setTitle,
@@ -46,7 +62,6 @@ const formSubmit = () => {};
     formSubmit,
   };
 
-  
   return (
     <div className="text-center">
       <h1 className="fs-2">Edit Article</h1>
