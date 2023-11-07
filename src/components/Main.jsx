@@ -8,6 +8,7 @@ import Loader from "../store/Loader";
 const Main = () => {
   const dispatch = useDispatch();
   const { articles, isLoading } = useSelector((state) => state.article);
+  const { loggedIn, user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
 
   //  fetch sync data
@@ -17,6 +18,17 @@ const Main = () => {
       const response = await ArticleService.getArticle();
 
       dispatch(getArticleSuccess(response.articles));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // =========== DELETE ARTICLE =============//
+  const deleteArticle = async (slug) => {
+    try {
+      await ArticleService.deleteArticle(slug);
+      // i call getArticle because after delete all article refresh one more
+      getArticle();
     } catch (error) {
       console.log(error);
     }
@@ -61,18 +73,23 @@ const Main = () => {
                       >
                         View
                       </button>
-                      <button
-                        type="button"
-                        className="btn btn-sm btn-outline-secondary"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        type="button"
-                        className="btn btn-sm btn-outline-danger"
-                      >
-                        Delete
-                      </button>
+                      {loggedIn && user.username === item.author.username && (
+                        <>
+                          <button
+                            type="button"
+                            className="btn btn-sm btn-outline-secondary"
+                          >
+                            Edit
+                          </button>
+                          <button
+                            type="button"
+                            className="btn btn-sm btn-outline-danger"
+                            onClick={() => deleteArticle(item.slug)}
+                          >
+                            Delete
+                          </button>
+                        </>
+                      )}
                     </div>
                     <small className="text-muted text-capitalize">
                       {item.author.username}
